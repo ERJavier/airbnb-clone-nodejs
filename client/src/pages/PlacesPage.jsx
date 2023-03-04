@@ -7,7 +7,8 @@ export default function PlacesPage() {
     const {action} = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('')
-    const [photoLink, setPhotoLink] = useState([]);
+    const [addedPhotos, setAddedPhotos] = useState([]);
+    const [photoLink, setPhotoLink] = useState();
     const [description, setDescription] = useState('')
     const [perks, setPerks] = useState('')
     const [extraInfo, setExtraInfo] = useState('')
@@ -35,8 +36,12 @@ export default function PlacesPage() {
         );
     }
     async function addPhotoByLink(ev) {
-      ev.preventDefault()
-      await axios.post('/upload-by-link', {link: photoLink})
+      ev.preventDefault();
+      const {data:filename} = await axios.post('/upload-by-link', {link: photoLink})
+      setAddedPhotos(prev => {
+        return[...prev, filename]
+      });
+      setPhotoLink('')
     }
 
   return (
@@ -93,11 +98,19 @@ export default function PlacesPage() {
                 value={photoLink}
                 onChange={(ev) => setPhotoLink(ev.target.value)}
               />
-              <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">
+              <button
+                onClick={addPhotoByLink}
+                className="bg-gray-200 px-4 rounded-2xl"
+              >
                 Add&nbsp;photo
               </button>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 l">
+              {addedPhotos.length > 0 && addedPhotos.map(link => (
+                <div>
+                  {link}
+                </div>
+              ))}
               <button className="flex gap-1 justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-500">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
