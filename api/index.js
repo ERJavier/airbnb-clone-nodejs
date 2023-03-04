@@ -1,6 +1,6 @@
 const express = require('express');
-require('dotenv').config()
 const cors = require("cors");
+require('dotenv').config()
 const { default: mongoose } = require('mongoose');
 const app = express();
 const bcrypt = require('bcrypt')
@@ -40,7 +40,7 @@ app.post('/register', async (req, res) => {
             email,
             password:bcrypt.hashSync(password, bcryptSalt),
         });
-        req.json(userDoc);
+        res.json(userDoc);
     } catch (e) {
         res.status(422).json(e);
     }  
