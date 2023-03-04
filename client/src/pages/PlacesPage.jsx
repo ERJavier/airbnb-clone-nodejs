@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import Perks from "../Perks";
+import axios from "axios";
 
 export default function PlacesPage() {
     const {action} = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('')
-    const [addedPhotos, setAddedPhotos] = useState([])
+    const [photoLink, setPhotoLink] = useState([]);
     const [description, setDescription] = useState('')
     const [perks, setPerks] = useState('')
     const [extraInfo, setExtraInfo] = useState('')
@@ -32,6 +33,10 @@ export default function PlacesPage() {
             {inputDescription(description)}
           </>
         );
+    }
+    async function addPhotoByLink(ev) {
+      ev.preventDefault()
+      await axios.post('/upload-by-link', {link: photoLink})
     }
 
   return (
@@ -85,11 +90,11 @@ export default function PlacesPage() {
               <input
                 type="text"
                 placeholder={"Add using a link ...jpg"}
-                value={addedPhotos}
-                onChange={(ev) => setAddedPhotos(ev.target.value)}
+                value={photoLink}
+                onChange={(ev) => setPhotoLink(ev.target.value)}
               />
-              <button className="bg-gray-200 px-4 rounded-2xl">
-                Add photo
+              <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">
+                Add&nbsp;photo
               </button>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 l">
@@ -153,7 +158,7 @@ export default function PlacesPage() {
               <div>
                 <h3 className="mt-2 -mb-2">Max number of guests</h3>
                 <input
-                  type="text"
+                  type="number"
                   value={maxGuests}
                   onChange={(ev) => setMaxGuests(ev.target.value)}
                 />
