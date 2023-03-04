@@ -1,7 +1,37 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom"
 
 export default function PlacesPage() {
     const {action} = useParams();
+    const [title, setTitle] = useState('');
+    const [address, setAddress] = useState('')
+    const [addedPhotos, setAddedPhotos] =useState([])
+    const [description, setDescription] = useState('')
+    const [perks, SetPerks] = useState('')
+    const [checkIn, setCheckIn] = useState('')
+    const [checkOut, setCheckOut] = useState('')
+    const [maxGuests, setMaxGuests] = useState(1);
+
+
+    function inputHeader(text) {
+        return (
+            <h2 className="text-2xl mt-4">{text}</h2>    
+        )
+    }
+    function inputDescription(text){
+        return (
+            <p className="text-gray-500 text-sm">{text}</p>
+        )
+    }
+    function preInput(header, description) {
+        return (
+          <>
+            {inputHeader(header)}
+            {inputDescription(description)}
+          </>
+        );
+    }
+
   return (
     <div>
       {action !== "new" && (
@@ -31,20 +61,17 @@ export default function PlacesPage() {
       {action === "new" && (
         <div>
           <form action="">
-            <h2 className="test-2xl mt-4">Title</h2>
-            <p className="text-gray-500 text-sm">
-              Title for your place. should be short and catchy as in
-              advertisment
-            </p>
+            {preInput(
+              "Title",
+              "Title for your place. should be short and catchy as in advertisment"
+            )}
             <input
               type="text"
-              placeholder="title, for example: My lovely apt"
+              placeholder="title, for example: My lov ely apt"
             />
-            <h2 className="test-2xl mt-4">Address</h2>
-            <p className="text-gray-500 text-sm">Address to your this place</p>
+            {preInput("Address", "Address to your this place")}
             <input type="text" placeholder="address" />
-            <h2 className="test-2xl mt-4">Photos</h2>
-            <p className="text-gray-500 text-sm">More = Better</p>
+            {preInput("Photos", "More = Better")}
             <div className="flex gap-2">
               <input type="text" placeholder={"Add using a link ...jpg"} />
               <button className="bg-gray-200 px-4 rounded-2xl">
@@ -70,20 +97,18 @@ export default function PlacesPage() {
                 Upload
               </button>
             </div>
-            <h2 className="test-2xl mt-4">Description</h2>
-            <p className="text-gray-500 text-sm">Description of the place</p>
+            {preInput("Description", "Description of the place")}
             <textarea />
-            <h2 className="test-2xl mt-4">Perks</h2>
-            <p className="text-gray-500 text-sm">
-              select all the perks of your place
-            </p>
+            {preInput("Perks", "select all the perks of your place")}
+
+            {/* CHECKBOXES */}
             <div className="grid gap-2 grid-col-2 md:grid-cols-4 lg:grid-cols-6">
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("wifi")}
+                  //   checked={selected.includes("wifi")}
                   name="wifi"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -104,9 +129,9 @@ export default function PlacesPage() {
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("parking")}
+                  //   checked={selected.includes("parking")}
                   name="parking"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -127,9 +152,9 @@ export default function PlacesPage() {
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("tv")}
+                  //   checked={selected.includes("tv")}
                   name="tv"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -150,9 +175,9 @@ export default function PlacesPage() {
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("radio")}
+                  //   checked={selected.includes("radio")}
                   name="radio"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -173,9 +198,9 @@ export default function PlacesPage() {
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("pets")}
+                  //   checked={selected.includes("pets")}
                   name="pets"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -196,9 +221,9 @@ export default function PlacesPage() {
               <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
-                //   checked={selected.includes("entrance")}
+                  //   checked={selected.includes("entrance")}
                   name="entrance"
-                //   onChange={handleCbClick}
+                  //   onChange={handleCbClick}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -217,6 +242,29 @@ export default function PlacesPage() {
                 <span>Private entrance</span>
               </label>
             </div>
+            {/* END OF CHECKBOXES */}
+            {preInput("Extra info", "House rules, etc.")}
+            <textarea />
+            {preInput(
+              "Check in & out times, max guests",
+              "add check in and out times, remeberer to have some time window to clean the place between guests."
+            )}
+
+            <div className="grid gap-2 sm:grid-cols-3">
+              <div>
+                <h3 className="mt-2 -mb-2">Check in time</h3>
+                <input type="text" placeholder="14:00" />
+              </div>
+              <div>
+                <h3 className="mt-2 -mb-2">Checkout in time</h3>
+                <input type="text" />
+              </div>
+              <div>
+                <h3 className="mt-2 -mb-2">Max number of guests</h3>
+                <input type="text" />
+              </div>
+            </div>
+            <button className="primary my-4">Save</button>
           </form>
         </div>
       )}
