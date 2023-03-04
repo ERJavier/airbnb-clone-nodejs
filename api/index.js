@@ -84,6 +84,10 @@ app.get('/profile', (req,res) => {
     }
 })
 
+app.post('/logout', (req,res) => {
+    res.cookie('token', '').json(true);
+})
+
 const port = process.env.PORT || 3000
 app.listen(port, () => {
     console.log(`app runing on port ${port}...`.cyan);
