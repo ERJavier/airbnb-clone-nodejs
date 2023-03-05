@@ -1,23 +1,28 @@
-const express = require('express');
+const express = require("express");
 const cors = require("cors");
-require('dotenv').config()
-const { default: mongoose } = require('mongoose');
+const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+const User = require("./models/User.js");
+const Place = require("./models/Place.js");
+const Booking = require("./models/Booking.js");
+const cookieParser = require("cookie-parser");
+const imageDownloader = require("image-downloader");
+// const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const multer = require("multer");
+const fs = require("fs");
+const mime = require("mime-types");
+const colors = require('colors')
+
+require("dotenv").config();
 const app = express();
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const colors = require('colors');
-const User = require('./models/User')
-const cookieParser = require('cookie-parser');
-const imageDownloader = require('image-downloader')
-const multer = require('multer')
-const fs = require('fs')
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-const jwtSecret = 'fhkhsfjueiywgroifwjskhfijdk'
+const jwtSecret = "fhkhsfjueiywgroifwjskhfijdk";
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads', express.static(__dirname+'/uploads/'))
+app.use("/uploads", express.static(__dirname + "/uploads/"));
 
 app.use(
   cors({
@@ -26,13 +31,12 @@ app.use(
   })
 );
 
-
-mongoose.connect(process.env.MONGO_URL)
-mongoose.connection.on('connected', function () {
-    console.log('Mongoose default connection open to ' .cyan + process.env.PORT .yellow)
-})
-
-
+mongoose.connect(process.env.MONGO_URL);
+mongoose.connection.on("connected", function () {
+  console.log(
+    "Mongoose default connection open to ".cyan + process.env.PORT.yellow
+  );
+});
 
 app.get("/api/test", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
@@ -251,7 +255,7 @@ app.get("/api/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`app runing on port ${port}...`.cyan);
-})
+  console.log(`app runing on port ${port}...`.cyan);
+});
