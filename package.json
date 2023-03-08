@@ -1,0 +1,12 @@
+{
+  "name": "airbnb-clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon api/index.js && vite client"
+  },
+  "keywords": [],
+  "author": "Javier Cepeda <erjavierc@gmail.com>",
+  "license": "ISC"
+}
